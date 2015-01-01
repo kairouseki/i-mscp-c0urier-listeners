@@ -23,7 +23,7 @@ use List::MoreUtils qw(uniq);
 my $httpPort = 80;
 my $httpsPort = 443;
 
-# Parameter allowing to add one or many IPs to the Apache2 vhost file of a specific domain
+# Parameter which allow to add one or many IPs to the Apache2 vhost file of specified domains
 # IPv6 addresses must be surrounded by square-brackets ( eg. [2001:db8:0:85a3:0:0:ac1f:8001] )
 # Please replace the values below by your own values
 my %perDomainAdditionalIPs = (
