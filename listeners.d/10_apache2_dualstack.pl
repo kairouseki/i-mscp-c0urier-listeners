@@ -18,13 +18,16 @@
 package Listener::Apache2::DualStack;
 
 use iMSCP::EventManager;
+use iMSCP::Net;
 use List::MoreUtils qw(uniq);
 
+# Port to use for http
 my $httpPort = 80;
+
+# Port to use for https
 my $httpsPort = 443;
 
 # Parameter which allow to add one or many IPs to the Apache2 vhost file of specified domains
-# IPv6 addresses must be surrounded by square-brackets ( eg. [2001:db8:0:85a3:0:0:ac1f:8001] )
 # Please replace the values below by your own values
 my %perDomainAdditionalIPs = (
 	'<domain1.tld>' => [ '<IP1>', '<IP2>' ],
@@ -32,9 +35,8 @@ my %perDomainAdditionalIPs = (
 );
 
 # Parameter which allow to add one or many IPs to all apache2 vhosts files
-# IPv6 addresses must be surrounded by square-brackets ( eg. [2001:db8:0:85a3:0:0:ac1f:8001] )
 # Please replace the values below by your own values
-my @additionalIps = ( '<IP1>', '<IP2>' );
+my @additionalIPs = ( '<IP1>', '<IP2>' );
 
 #
 ## Please, don't edit anything below this line
@@ -57,33 +59,35 @@ sub addIPs
 			$port = $httpsPort;
 		}
 
-		my $ipList = ();
-
 		# All vhost IPs
-		if(@additionalIps) {
-			@ipList = split ' ', (join ":$port ", @additionalIps) . ":$port";
-
-			unless($sslVhost) {
-				@IPS = uniq( @IPS, @additionalIps );
-			} else {
-				@SSL_IPS = uniq( @SSL_IPS, @additionalIps );
-			}
-		}
+		my @ipList = @additionalIPs;
 
 		# Per domain IPs
 		if(exists $perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}) {
-			@ipList = uniq(
-				@ipList, split ' ', (join ":$port ", @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}}) . ":$port"
-			);
-
-			unless($sslVhost) {
-				@IPS = uniq( @IPS, @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}} );
-			} else {
-				@SSL_IPS = uniq( @SSL_IPS, @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}} );
-			}
+			@ipList = uniq( @ipList, @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}} );
 		}
 
-		$$cfgTpl =~ s/(<VirtualHost.*?)>/$1 @ipList>/ if @ipList;
+		if(@ipList) {
+			# Format IPs ( normalize and surround any IPv6 with square-brackets )
+			my $ipMngr = iMSCP::Net->getInstance();
+			my @formattedIPs = ();
+			for my $ip(@ipList) {
+				if($ipMngr->getAddrVersion($ip) eq 'ipv6') {
+					push @formattedIPs, '[' . $ipMngr->normalizeAddr($ip) . ']' . ":$port";
+				} else {
+					push @formattedIPs, "$ip:$port";
+				}
+			}
+
+			$$cfgTpl =~ s/(<VirtualHost.*?)>/$1 @formattedIPs>/;
+			undef @formattedIPs;
+
+			unless($sslVhost) {
+				@IPS = uniq( @IPS, @ipList );
+			} else {
+				@SSL_IPS = uniq( @SSL_IPS, @ipList );
+			}
+		}
 	}
 
 	0;
