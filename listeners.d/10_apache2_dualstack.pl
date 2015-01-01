@@ -43,17 +43,6 @@ my @additionalIps = ( '<IP1>', '<IP2>' );
 my @IPS = ();
 my @SSL_IPS = ();
 
-# Listener responsible to make the Httpd server implementation aware of additional IPs
-sub addIPList
-{
-	my $data = $_[1];
-
-	@{$data->{'IPS'}} = uniq( @{$data->{'IPS'}}, @IPS );
-	@{$data->{'SSL_IPS'}} = uniq( @{$data->{'SSL_IPS'}}, @SSL_IPS );
-
-	0;
-}
-
 # Listener responsible to add additional IPs in Apache2 vhost files
 sub addIPs
 {
@@ -100,10 +89,21 @@ sub addIPs
 	0;
 }
 
+# Listener responsible to make the Httpd server implementation aware of additional IPs
+sub addIPList
+{
+	my $data = $_[1];
+
+	@{$data->{'IPS'}} = uniq( @{$data->{'IPS'}}, @IPS );
+	@{$data->{'SSL_IPS'}} = uniq( @{$data->{'SSL_IPS'}}, @SSL_IPS );
+
+	0;
+}
+
 # Register event listeners on the event manager
 my $eventManager = iMSCP::EventManager->getInstance();
-$eventManager->register('beforeHttpdAddIps', \&addIPList);
 $eventManager->register('afterHttpdBuildConfFile', \&addIPs);
+$eventManager->register('beforeHttpdAddIps', \&addIPList);
 
 1;
 __END__
