@@ -25,13 +25,16 @@ my $httpsPort = 443;
 
 # Parameter allowing to add one or many IPs to the Apache2 vhost file of a specific domain
 # IPv6 addresses must be surrounded by square-brackets (eg )[2001:db8:0:85a3:0:0:ac1f:8001]
-# Please replace the values below by true values
-my %perDomainAdditionalIPs = ();
+# Please replace the values below by your own values
+my %perDomainAdditionalIPs = (
+	'<domain1.tld>' => ['<IP1>', '<IP2>'],
+	'<domain1.tld>' => ['<IP1>', '<IP2>']
+);
 
 # Parameter which allow to add one or many IPs to all apache2 vhosts files
 # IPv6 addresses must be surrounded by square-brackets (eg )[2001:db8:0:85a3:0:0:ac1f:8001]
-# Please replace the values below by true values
-my @additionalIps = ('192.168.5.118', '192.168.5.119' );
+# Please replace the values below by your own values
+my @additionalIps = ( '<IP1>', '<IP2>' );
 
 #
 ## Please, don't edit anything below this line
