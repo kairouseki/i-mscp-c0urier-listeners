@@ -28,7 +28,7 @@ my $httpsPort = 443;
 # Please replace the values below by your own values
 my %perDomainAdditionalIPs = (
 	'<domain1.tld>' => ['<IP1>', '<IP2>'],
-	'<domain1.tld>' => ['<IP1>', '<IP2>']
+	'<domain2.tld>' => ['<IP1>', '<IP2>']
 );
 
 # Parameter which allow to add one or many IPs to all apache2 vhosts files
