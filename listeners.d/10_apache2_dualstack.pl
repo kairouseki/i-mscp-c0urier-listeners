@@ -40,21 +40,16 @@ my @additionalIps = ( '<IP1>', '<IP2>' );
 ## Please, don't edit anything below this line
 #
 
+my @IPS = ();
+my @SSL_IPS = ();
+
 # Listener responsible to make the Httpd server implementation aware of additional IPs
 sub addIPList
 {
 	my $data = $_[1];
 
-	my @ipsList = ();
-
-	for my $domain(keys %perDomainAdditionalIPs) {
-		@ipsList = ( @ipsList, @{$perDomainAdditionalIPs{$domain}} );
-	}
-
-	@ipsList = s/\[|\]//g for @ipsList, @additionalIps;
-
-	#@{$data->{'SSL_IPS'}} = uniq(@{$data->{'SSL_IPS'}}, @ipsList);
-	@{$data->{'IPS'}} = uniq( @{$data->{'IPS'}}, @ipsList );
+	@{$data->{'IPS'}} = uniq( @{$data->{'IPS'}}, @IPS );
+	@{$data->{'SSL_IPS'}} = uniq( @{$data->{'SSL_IPS'}}, @SSL_IPS );
 
 	0;
 }
@@ -65,22 +60,41 @@ sub addIPs
 	my ($cfgTpl, $tplName, $data) = @_;
 
 	if(exists $data->{'DOMAIN_NAME'} && $tplName =~ /^domain(?:_(?:disabled|redirect))?(_ssl)?\.tpl$/) {
-		my $port = (defined $1) ? $httpsPort : $httpPort;
+		my $sslVhost = 0;
+		my $port = $httpPort;
+
+		if(defined $1) {
+			$sslVhost = 1;
+			$port = $httpsPort;
+		}
+
 		my $ipList = ();
 
 		# All vhost IPs
 		if(@additionalIps) {
 			@ipList = split ' ', (join ":$port ", @additionalIps) . ":$port";
+
+			unless($sslVhost) {
+				@IPS = uniq( @IPS, @additionalIps );
+			} else {
+				@SSL_IPS = uniq( @SSL_IPS, @additionalIps );
+			}
 		}
 
 		# Per domain IPs
 		if(exists $perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}) {
-			@ipList = uniq(@ipList, split ' ', (join ":$port ", @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}}) . ":$port");
+			@ipList = uniq(
+				@ipList, split ' ', (join ":$port ", @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}}) . ":$port"
+			);
+
+			unless($sslVhost) {
+				@IPS = uniq( @IPS, @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}} );
+			} else {
+				@SSL_IPS = uniq( @SSL_IPS, @{$perDomainAdditionalIPs{$data->{'DOMAIN_NAME'}}} );
+			}
 		}
 
-		if(@ipList) {
-			$$cfgTpl =~ s/(<VirtualHost.*?)>/$1 @ipList>/;
-		}
+		$$cfgTpl =~ s/(<VirtualHost.*?)>/$1 @ipList>/ if @ipList;
 	}
 
 	0;
