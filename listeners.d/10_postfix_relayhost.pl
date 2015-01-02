@@ -49,7 +49,7 @@ sub setupRelayhost
 
 # Register event listeners on the event manager
 my $eventManager = iMSCP::EventManager->getInstance();
-$eventManager->register('afterMtaBuildMainCfFile', \&addEntries);
+$eventManager->register('afterMtaBuildMainCfFile', \&setupRelayhost);
 
 1;
 __END__
