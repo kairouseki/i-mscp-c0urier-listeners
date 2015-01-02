@@ -29,7 +29,7 @@ use iMSCP::Execute;
 # Path to Postfix configuration directory
 my $postfixConfigDir = '/etc/postfix';
 
-## Postfix main.cf parameters to be modified
+## Postfix main.cf parameters
 # Hash where each pair of key/value correspond to a specific postfix parameter
 # Please replace the values below by your own values
 my %mainCfParameters = (
@@ -52,7 +52,7 @@ my @masterCfParameters = (
 # Listener responsible to tune Postfix main.cf file, once it was built by i-MSCP
 sub setupMainCf
 {
-	if(iMSCP::ProgramFinder::find('postconf')) {
+	if(%mainCfParameters && iMSCP::ProgramFinder::find('postconf')) {
 		my @cmd = (
 			'postconf',
 			'-e', # Needed for Postfix < 2.8
@@ -76,7 +76,9 @@ sub setupMasterCf
 {
 	my $cfgTpl = $_[0];
 
-	$$cfgTpl .= join("\n", @masterCfParameters) . "\n";
+	if(@masterCfParameters) {
+		$$cfgTpl .= join("\n", @masterCfParameters) . "\n";
+	}
 
 	0;
 }
