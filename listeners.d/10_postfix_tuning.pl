@@ -33,6 +33,7 @@ my $postfixConfigDir = '/etc/postfix';
 # Hash where each pair of key/value correspond to a specific postfix parameter
 # Please replace the values below by your own values
 my %mainCfParameters = (
+	'inet_protocols' => 'ipv4,ipv6',
 	'inet_interfaces' => '127.0.0.1, 192.168.2.5, [2001:db8:0:85a3::ac1f:8001]',
 	'smtp_bind_address' => '192.168.2.5',
 	'smtp_bind_address6' => '',
@@ -55,13 +56,13 @@ sub setupMainCf
 		my @cmd = (
 			'postconf',
 			'-e', # Needed for Postfix < 2.8
-			'-c', escapeShell('$postfixConfigDir')
+			'-c', escapeShell($postfixConfigDir)
 		);
 
-		push @cmd, $_ . '=' . escapeShell($_->{$_}) for keys %mainCfParameters;
+		push @cmd, ($_ . '=' . escapeShell($mainCfParameters{$_})) for keys %mainCfParameters;
 
 		my ($stdout, $stderr);
-		my $rs = iMSCP::Execute("@cmd", \$stdout, \$stdout);
+		my $rs = execute("@cmd", \$stdout, \$stderr);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
@@ -73,14 +74,16 @@ sub setupMainCf
 # Listener responsible to add entries at bottom of Postfix master.cf file, once it was built by i-MSCP
 sub setupMasterCf
 {
-	$$_[0] .= join "\n", @masterCfParameters;
+	my $cfgTpl = $_[0];
+
+	$$cfgTpl .= join("\n", @masterCfParameters) . "\n";
 
 	0;
 }
 
 # Register event listeners on the event manager
 my $eventManager = iMSCP::EventManager->getInstance();
-$eventManager->register('afterMtaBuildMainCfFile', \&setupMainCf);
+$eventManager->register('afterMtaBuildConf', \&setupMainCf);
 $eventManager->register('afterMtaBuildMasterCfFile', \&setupMasterCf);
 
 1;

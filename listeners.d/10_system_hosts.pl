@@ -49,7 +49,7 @@ sub addEntries
 			return 1;
 		}
 
-		my $rs = $file->set( join "\n", @entries );
+		my $rs = $file->set( $fileContent . ( join "\n", @entries ) . "\n" );
 		return $rs if $rs;
 
 		$rs = $file->save();
