@@ -1,4 +1,4 @@
-# i-MSCP Listener::Apache2::DualStack listener file
+# i-MSCP Listener::Postfix::Relayhost listener file
 # Copyright (C) 2015 Laurent Declercq <l.declercq@nuxwin.com>
 #
 # This library is free software; you can redistribute it and/or
