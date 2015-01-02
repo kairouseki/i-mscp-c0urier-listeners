@@ -80,7 +80,7 @@ sub setupMasterCf
 
 # Register event listeners on the event manager
 my $eventManager = iMSCP::EventManager->getInstance();
-$eventManager->register('afterMtaBuildMainCfFile', \&setupRelayhost);
+$eventManager->register('afterMtaBuildMainCfFile', \&setupMainCf);
 $eventManager->register('afterMtaBuildMasterCfFile', \&setupMasterCf);
 
 1;
