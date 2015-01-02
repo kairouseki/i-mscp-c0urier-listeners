@@ -28,7 +28,7 @@ use iMSCP::Execute;
 
 # Parameter which allow to set relayhost parameter
 # Please replace the value below by your own value
-my $relayhost = '192.168.1.5:125'
+my $relayhost = '192.168.1.5:125';
 
 # Please, don't edit anything below this line
 
