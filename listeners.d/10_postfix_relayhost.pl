@@ -26,12 +26,13 @@ use iMSCP::Execute;
 ## Configuration parameters
 #
 
-# Parameter which allow to set relayhost parameter in postfix main.cf file after i-MSCP processing
+# Parameter which allow to set relayhost parameter
 # Please replace the value below by your own value
 my $relayHost = '192.168.1.5:125'
 
 # Please, don't edit anything below this line
 
+# Listener responsible to setup relayhost parameter in postfix main.cf file after i-MSCP processing
 sub setupRelayhost
 {
 	if(iMSCP::ProgramFinder::find('postconf')) {
