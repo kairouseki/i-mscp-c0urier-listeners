@@ -56,7 +56,7 @@ sub setupMainCf
 		my @cmd = (
 			'postconf',
 			'-e', # Needed for Postfix < 2.8
-			'-c', escapeShell('$postfixConfigDir'),
+			'-c', escapeShell('$postfixConfigDir')
 		);
 
 		push @cmd, $_ . '=' . escapeShell($_->{$_}) for keys %mainCfParameters;
@@ -71,12 +71,10 @@ sub setupMainCf
 	0;
 }
 
-# Listener responsible to add entries at bottom of Postfix master.Cf file, once it was built by i-MSCP
+# Listener responsible to add entries at bottom of Postfix master.cf file, once it was built by i-MSCP
 sub setupMasterCf
 {
-	my $cfgTpl = $_[0];
-
-	$$cfgTpl .= join "\n", @masterCfParameters;
+	$$$_[0] .= join "\n", @masterCfParameters;
 
 	0;
 }
@@ -84,7 +82,7 @@ sub setupMasterCf
 # Register event listeners on the event manager
 my $eventManager = iMSCP::EventManager->getInstance();
 $eventManager->register('afterMtaBuildMainCfFile', \&setupRelayhost);
-$eventManager->register('afterMtaBuildMasterCfFile', \&setupRelayhost);
+$eventManager->register('afterMtaBuildMasterCfFile', \&setupMasterCf);
 
 1;
 __END__
