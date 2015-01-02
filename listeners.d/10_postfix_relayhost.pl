@@ -36,7 +36,7 @@ my $relayHost = '192.168.1.5:125'
 sub setupRelayhost
 {
 	if(iMSCP::ProgramFinder::find('postconf')) {
-		my @cmd = ('postconf', ("relayhost=" . escapeShell($relayhost)));
+		my @cmd = ('postconf', ('relayhost=' . escapeShell($relayhost)));
 
 		my ($stdout, $stderr);
 		my $rs = iMSCP::Execute(@cmd, \$stdout, \$stdout);
