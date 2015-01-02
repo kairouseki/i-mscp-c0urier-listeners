@@ -37,7 +37,7 @@ my @hostsFileEntries = (
 
 # Please, don't edit anything below this line
 
-# Listener responsible to add host entries in the system hosts file, once it was built by i-MSCP
+# Listener responsible to add hosts file entries in the system hosts file, once it was built by i-MSCP
 sub addEntries
 {
 	if(-f $hostsFilePath) {
