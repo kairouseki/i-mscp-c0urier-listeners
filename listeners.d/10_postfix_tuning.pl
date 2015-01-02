@@ -29,7 +29,6 @@ use iMSCP::Execute;
 # Path to Postfix configuration directory
 my $postfixConfigDir = '/etc/postfix';
 
-
 ## Postfix main.cf parameters to be modified
 # Hash where each pair of key/value correspond to a specific postfix parameter
 # Please replace the values below by your own values
@@ -74,7 +73,7 @@ sub setupMainCf
 # Listener responsible to add entries at bottom of Postfix master.cf file, once it was built by i-MSCP
 sub setupMasterCf
 {
-	$$$_[0] .= join "\n", @masterCfParameters;
+	$$_[0] .= join "\n", @masterCfParameters;
 
 	0;
 }
