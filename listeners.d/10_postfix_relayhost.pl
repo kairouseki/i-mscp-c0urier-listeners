@@ -39,7 +39,7 @@ sub setupRelayhost
 		my @cmd = ('postconf', ('relayhost=' . escapeShell($relayhost)));
 
 		my ($stdout, $stderr);
-		my $rs = iMSCP::Execute(@cmd, \$stdout, \$stdout);
+		my $rs = iMSCP::Execute("@cmd", \$stdout, \$stdout);
 		debug($stdout) if $stdout;
 		error($stderr) if $stderr && $rs;
 		return $rs if $rs;
