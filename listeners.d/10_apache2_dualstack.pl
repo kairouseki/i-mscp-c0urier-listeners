@@ -45,7 +45,7 @@ my @additionalIPs = ( '<IP1>', '<IP2>' );
 my @IPS = ();
 my @SSL_IPS = ();
 
-# Listener responsible to add additional IPs in Apache2 vhost files
+# Listener responsible to add additional IPs in Apache2 vhost files, once they was built by i-MSCP
 sub addIPs
 {
 	my ($cfgTpl, $tplName, $data) = @_;

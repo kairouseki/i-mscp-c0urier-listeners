@@ -25,19 +25,19 @@ use iMSCP::File;
 ## Configuration parameters
 #
 
-# Path to hosts file
+# Path to system hosts file
 my $hostsFilePath = '/etc/hosts';
 
 # Parameter which allow to add one or many entries in the system hosts file
 # Please replace the values below by your own values
-my @entries = (
+my @hostsFileEntries = (
 	'192.168.1.10	foo.mydomain.org	foo',
 	'192.168.1.13	bar.mydomain.org	bar'
 );
 
 # Please, don't edit anything below this line
 
-# Listener responsible to add entries in hosts file after i-MSCP hosts file generation
+# Listener responsible to add host entries in the system hosts file, once it was built by i-MSCP
 sub addEntries
 {
 	if(-f $hostsFilePath) {
@@ -49,7 +49,7 @@ sub addEntries
 			return 1;
 		}
 
-		my $rs = $file->set( $fileContent . ( join "\n", @entries ) . "\n" );
+		my $rs = $file->set( $fileContent . ( join "\n", @hostsFileEntries ) . "\n" );
 		return $rs if $rs;
 
 		$rs = $file->save();

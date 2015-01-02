@@ -49,7 +49,7 @@ my @masterCfParameters = (
 
 # Please, don't edit anything below this line
 
-# Listener responsible to tune Postfix main.cf file, once it was build by i-MSCP
+# Listener responsible to tune Postfix main.cf file, once it was built by i-MSCP
 sub setupMainCf
 {
 	if(iMSCP::ProgramFinder::find('postconf')) {
