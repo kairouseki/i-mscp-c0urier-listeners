@@ -18,7 +18,7 @@
 package Listener::System::Hosts;
 
 use iMSCP::Debug;
-use iMSCP::EventsManager;
+use iMSCP::EventManager;
 use iMSCP::File;
 
 #
