@@ -15,6 +15,10 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
+#
+## i-MSCP listener file which provides dual stack support for Apache2
+#
+
 package Listener::Apache2::DualStack;
 
 use iMSCP::EventManager;
@@ -28,14 +32,14 @@ my $httpPort = 80;
 my $httpsPort = 443;
 
 # Parameter which allow to add one or many IPs to the Apache2 vhost file of specified domains
-# Please replace the values below by your own values
+# Please replace the entries below by your own entries
 my %perDomainAdditionalIPs = (
 	'<domain1.tld>' => [ '<IP1>', '<IP2>' ],
 	'<domain2.tld>' => [ '<IP1>', '<IP2>' ]
 );
 
 # Parameter which allow to add one or many IPs to all apache2 vhosts files
-# Please replace the values below by your own values
+# Please replace the entries below by your own entries
 my @additionalIPs = ( '<IP1>', '<IP2>' );
 
 #

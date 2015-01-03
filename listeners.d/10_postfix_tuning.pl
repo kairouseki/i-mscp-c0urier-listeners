@@ -15,6 +15,10 @@
 # License along with this library; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301 USA
 
+#
+## i-MSCP listener file which allow to tune Postfix configuration
+#
+
 package Listener::Postfix::Tuning;
 
 use iMSCP::Debug;
@@ -29,9 +33,9 @@ use iMSCP::Execute;
 # Path to Postfix configuration directory
 my $postfixConfigDir = '/etc/postfix';
 
-## Postfix main.cf parameters
-# Hash where each pair of key/value correspond to a specific postfix parameter
-# Please replace the values below by your own values
+## Postfix main.cf ( see http://www.postfix.org/postconf.5.html )
+# Hash where each pair of key/value correspond to a postfix parameter
+# Please replace the entries below by your own entries
 my %mainCfParameters = (
 	'inet_protocols' => 'ipv4,ipv6',
 	'inet_interfaces' => '127.0.0.1, 192.168.2.5, [2001:db8:0:85a3::ac1f:8001]',
@@ -40,14 +44,16 @@ my %mainCfParameters = (
 	'relayhost' => '192.168.1.5:125'
 );
 
-## Postfix master.cf parameters
-# Array where each line correspond to a postfix master.cf entry. Entries are added at bottom.
-# Please replace the values blow by your own values
+## Postfix master.cf ( see http://www.postfix.org/master.5.html )
+# Array where each entry correspond to a postfix service. Entries are added at bottom.
+# Please replace the entries below by your own entries
 my @masterCfParameters = (
 	'125       inet  n       -       -       -       -       smtpd'
 );
 
-# Please, don't edit anything below this line
+#
+## Please, don't edit anything below this line
+#
 
 # Listener responsible to tune Postfix main.cf file, once it was built by i-MSCP
 sub setupMainCf
