@@ -1,26 +1,29 @@
 i-mscp-c0urier-listeners
-========================
+=========================
 
-Set of i-MSCP listener files for c0urier.net servers. Those listener are only compatible with i-MSCP >= **1.2.0**
+Set of i-MSCP listener files for i-MSCP. Those listener files are only compatible with i-MSCP >= **1.2.0**
 
-## Listener::Apache2::DualStack
+## Listener files
 
-This listener provide dual stack support for Apache2.
+Below, you can find a list of all listener file which are available in that repository and their respective purpose.
+To install a listener file, you must upload it in your /etc/imscp/listeners.d directory and edit the configuration
+parameters inside it. Once done, you can rerun the i-MSCP installer.
 
-## Listener::Apache2::Postfix::Tuning
+### Listener::Apache2::DualStack
 
-This listener allow to tune Postfix configuration files ( main.cf and master.cf ).
+The listeners.d/10_apache2_dualstack.pl listener file provide dual stack support for Apache2.
 
-Note: You can only add postfix service entries in **master.cf** file.
+### Listener::Postfix::Tuning
 
-## Listener::Apache2::System::Hosts
+This listeners.d/10_postfix_tuning.pl listener file allow to tune Postfix configuration files ( main.cf and master.cf ).
 
-This listener file allow to add host entries in the system hosts file (eg. /etc/hosts ).
+### Listener::Apache2::System::Hosts
 
+This listeners.d/10_system_hosts.pl listener file allow to add host entries in the system hosts file ( eg. /etc/hosts ).
 
-## License
+### License
 
-	copyright (c) 2015 Laurent Declercq <l.declercq@nuxwin.com>
+	Copyright (c) 2015 Laurent Declercq <l.declercq@nuxwin.com>
 	
 	This library is free software; you can redistribute it and/or
 	modify it under the terms of the GNU Lesser General Public
