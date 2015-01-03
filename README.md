@@ -5,7 +5,7 @@ Set of i-MSCP listener files for i-MSCP. These listener files are only compatibl
 
 ## Listener files
 
-Below, you can find a list of all listener files which are available in that repository and their respective purpose.
+Below, you can find a list of all listener files which are available in that repository, and their respective purpose.
 
 To install a listener file, you must upload it in your **/etc/imscp/listeners.d** directory, and edit the configuration
 parameters inside it. Once done, you must rerun the i-MSCP installer.
