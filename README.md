@@ -1,7 +1,7 @@
 i-mscp-c0urier-listeners
 =========================
 
-Set of i-MSCP listener files for i-MSCP. These listener files are only compatible with i-MSCP >= **1.2.0**.
+Set of listener files for i-MSCP. These listener files are only compatible with i-MSCP >= **1.2.0**.
 
 ## Listener files
 
