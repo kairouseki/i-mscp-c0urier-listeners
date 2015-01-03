@@ -18,7 +18,7 @@ The **listeners.d/10_apache2_dualstack.pl** listener file provide dual stack sup
 
 The **listeners.d/10_postfix_tuning.pl** listener file allow to tune Postfix configuration files ( main.cf and master.cf ).
 
-### Listener::Apache2::System::Hosts
+### Listener::System::Hosts
 
 The **listeners.d/10_system_hosts.pl** listener file allow to add host entries in the system hosts file ( eg. /etc/hosts ).
 
